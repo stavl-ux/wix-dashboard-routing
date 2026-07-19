@@ -8,7 +8,7 @@ Mark a route as correct only when the implementation primitive and behavior both
 
 Compare the two runs on:
 
-1. correct primitive selection;
+1. correct host-extension and primitive selection;
 2. number of unsupported assumptions;
 3. amount of custom code where a documented primitive existed;
 4. data-schema completeness, including existing record handling;

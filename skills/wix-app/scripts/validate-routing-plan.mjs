@@ -1,14 +1,37 @@
 #!/usr/bin/env node
 import { readFile } from 'node:fs/promises';
 
-const routes = new Set([
+const hostExtensions = new Set([
+  'DASHBOARD_PAGE',
+  'DASHBOARD_MODAL',
+  'DASHBOARD_PLUGIN',
+  'DASHBOARD_MENU_PLUGIN',
+  'DATA_COLLECTION',
+]);
+const primitives = new Set([
   'auto-patterns',
+  'auto-patterns-override',
   'custom-dashboard',
-  'dashboard-modal',
-  'side-panel',
-  'drawer',
+  'wds-side-panel',
+  'wds-drawer',
+  'dashboard-modal-api',
   'data-schema',
   'data-operations',
+  'custom-visualization',
+]);
+const dataSourceKinds = new Set([
+  'existing-site-collection',
+  'new-app-collection',
+  'wix-business-data',
+  'external-api',
+  'none',
+]);
+const compositions = new Set([
+  'standalone-auto-patterns',
+  'documented-override',
+  'custom-dashboard-page',
+  'separate-extension',
+  'non-visual',
 ]);
 
 const planPath = process.argv[2];
@@ -27,27 +50,63 @@ if (!Array.isArray(plan.capabilities) || plan.capabilities.length === 0) {
   errors.push('capabilities must contain at least one capability.');
 }
 
+const capabilitiesBySurface = new Map();
+
 for (const [index, capability] of (plan.capabilities ?? []).entries()) {
   const label = `capabilities[${index}]`;
-  for (const field of ['id', 'surface', 'route', 'acceptance']) {
+  for (const field of ['id', 'surface', 'hostSurfaceId', 'hostExtension', 'implementationPrimitive', 'composition', 'acceptance']) {
     if (typeof capability[field] !== 'string' || !capability[field].trim()) {
       errors.push(`${label}.${field} must be a non-empty string.`);
     }
   }
-  if (!capability.data || typeof capability.data !== 'object') {
-    errors.push(`${label}.data must describe the data scope.`);
+  if (!capability.dataSource || typeof capability.dataSource !== 'object') {
+    errors.push(`${label}.dataSource must describe the source of data.`);
   }
   if (!Array.isArray(capability.references) || capability.references.length === 0) {
     errors.push(`${label}.references must name at least one reference.`);
   }
-  if (!routes.has(capability.route)) {
-    errors.push(`${label}.route must be one of: ${[...routes].join(', ')}.`);
+  if (!hostExtensions.has(capability.hostExtension)) {
+    errors.push(`${label}.hostExtension must be one of: ${[...hostExtensions].join(', ')}.`);
   }
-  if (capability.route === 'auto-patterns' && capability.data?.scope !== 'single-collection') {
-    errors.push(`${label} uses auto-patterns but data.scope is not single-collection.`);
+  if (!primitives.has(capability.implementationPrimitive)) {
+    errors.push(`${label}.implementationPrimitive must be one of: ${[...primitives].join(', ')}.`);
   }
-  if (capability.data?.scope === 'multi-collection' && capability.route === 'auto-patterns') {
-    errors.push(`${label} must not route a multi-collection capability to auto-patterns.`);
+  if (!dataSourceKinds.has(capability.dataSource?.kind)) {
+    errors.push(`${label}.dataSource.kind must be one of: ${[...dataSourceKinds].join(', ')}.`);
+  }
+  if (!compositions.has(capability.composition)) {
+    errors.push(`${label}.composition must be one of: ${[...compositions].join(', ')}.`);
+  }
+  if (capability.implementationPrimitive === 'auto-patterns' && capability.hostExtension !== 'DASHBOARD_PAGE') {
+    errors.push(`${label} uses auto-patterns but is not hosted by DASHBOARD_PAGE.`);
+  }
+  if (capability.implementationPrimitive === 'auto-patterns' && capability.composition !== 'standalone-auto-patterns') {
+    errors.push(`${label} uses auto-patterns but is not a standalone Auto Patterns page.`);
+  }
+  if (['wds-side-panel', 'wds-drawer'].includes(capability.implementationPrimitive) && capability.hostExtension !== 'DASHBOARD_PAGE') {
+    errors.push(`${label} uses a WDS panel primitive but is not hosted by DASHBOARD_PAGE.`);
+  }
+  if (['wds-side-panel', 'wds-drawer'].includes(capability.implementationPrimitive) && capability.composition === 'standalone-auto-patterns') {
+    errors.push(`${label} cannot add a WDS panel primitive to a standalone Auto Patterns page without a documented override.`);
+  }
+  if (capability.implementationPrimitive === 'dashboard-modal-api' && capability.hostExtension !== 'DASHBOARD_MODAL') {
+    errors.push(`${label} uses dashboard-modal-api but is not hosted by DASHBOARD_MODAL.`);
+  }
+  if (capability.dataSource?.kind === 'new-app-collection' && capability.hostExtension !== 'DATA_COLLECTION' && capability.implementationPrimitive === 'data-schema') {
+    errors.push(`${label} creates app-owned schema but is not hosted by DATA_COLLECTION.`);
+  }
+
+  const surfaceCapabilities = capabilitiesBySurface.get(capability.hostSurfaceId) ?? [];
+  surfaceCapabilities.push({ capability, label });
+  capabilitiesBySurface.set(capability.hostSurfaceId, surfaceCapabilities);
+}
+
+for (const [hostSurfaceId, surfaceCapabilities] of capabilitiesBySurface) {
+  const standaloneAutoPatterns = surfaceCapabilities.filter(
+    ({ capability }) => capability.implementationPrimitive === 'auto-patterns' && capability.composition === 'standalone-auto-patterns',
+  );
+  if (standaloneAutoPatterns.length && surfaceCapabilities.length > 1) {
+    errors.push(`hostSurfaceId ${hostSurfaceId} mixes a standalone Auto Patterns page with other capabilities. Use a documented override, a custom Dashboard Page, or separate surfaces.`);
   }
 }
 

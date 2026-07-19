@@ -1,10 +1,19 @@
 # Data Model and Operations
 
-Treat schema, relationship values, and manager workflows as three separate deliverables.
+Treat source selection, schema, relationship values, and manager workflows as separate deliverables.
+
+## 0. Choose the Data Source
+
+| Source | Action |
+| --- | --- |
+| Existing site CMS collection | Resolve the existing collection by supplied ID, clear name, or verified site context. Do not create an app-owned collection. |
+| New app-owned data | Create a Data Collection extension, obtain the app namespace, and use its scoped collection ID. |
+| Wix business data or external API | Read the matching API reference. Create a CMS collection only when app-owned persistence is explicitly required. |
+| Unknown | Inspect available context or ask one targeted question before choosing storage. |
 
 ## 1. Schema
 
-Define collections, fields, indexes, permissions, and reference fields. For app-owned collections, obtain the required namespace and use the scoped collection identifier.
+For new app-owned collections, define fields, indexes, permissions, and reference fields. Obtain the required namespace and use the scoped collection identifier. For existing collections, inspect the actual schema before relying on a field name or type.
 
 ## 2. Relationship Data
 

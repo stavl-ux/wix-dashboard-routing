@@ -1,27 +1,27 @@
 # Capability Catalog
 
-Use this catalog as a boundary map. “Supported” means a documented implementation route exists; it does not mean every requested variation is automatically generated.
+Use this catalog to separate the extension that is scaffolded from the primitive implemented inside it.
 
-| Capability | Preferred primitive | Boundary |
-| --- | --- | --- |
-| Collection table with supported CRUD | Auto Patterns | One collection and supported declarative actions |
-| Entity create/edit/view | Auto Patterns | Use supported entity pages and action configuration |
-| Table header, actions, slots, columns, sections | Auto Patterns override | Only when `patterns.json` exists |
-| Multiple collections or a join | Custom dashboard/data logic | Define relationship, query, null behavior, and write path |
-| Relationship schema | Data Collection | Reference definition is not data population |
-| Assign/change a relationship | Data operations + contextual UI | Persist the record change and refresh displayed data |
-| KPI cards | Custom dashboard metric component | Require source, calculation, loading, empty, and error states |
-| Charts | Custom dashboard visualization | Require aggregation contract and malformed-data handling |
-| Desktop inspection/edit flow | WDS SidePanel | Keep page context visible and preserve overlay behavior |
-| Mobile overlay | WDS Drawer | Do not use as a synonym for desktop SidePanel |
-| Focused popup | Dashboard Modal | Do not embed a page modal directly in a Dashboard Page |
+| Capability | Host extension | Preferred primitive | Boundary |
+| --- | --- | --- | --- |
+| Collection table with supported CRUD | Dashboard Page | Auto Patterns | One collection; full page fits declarative configuration or documented overrides |
+| Entity create/edit/view | Dashboard Page | Auto Patterns | Use supported entity pages and action configuration |
+| Header, actions, slots, columns, sections | Existing Dashboard Page | Auto Patterns override | Only where `patterns.json` and a documented override exist |
+| Multiple collections or a join | Dashboard Page | Custom data/query logic | Define relationship, query, null behavior, and write path |
+| Relationship schema | Data Collection or existing site resource | Schema configuration | Reference definition is not data population |
+| Assign/change a relationship | Dashboard Page | Wix Data operation plus contextual UI | Persist, refresh, and handle missing references |
+| KPI cards | Dashboard Page | Custom metric component | Require source, calculation, loading, empty, and error states |
+| Charts | Dashboard Page | Custom visualization | Require aggregation contract and malformed-data handling |
+| Desktop inspection/edit flow | Dashboard Page | WDS SidePanel | Use only with a documented integration path; otherwise host the page custom |
+| Mobile overlay | Dashboard Page | WDS Drawer | Do not use as a synonym for SidePanel |
+| Focused popup | Dashboard Modal | Dashboard Modal API | Do not embed a page modal directly in a Dashboard Page |
 
 ## Unsupported-by-Default Assumptions
 
 Do not assume any of these without a documented source:
 
-- Auto Patterns supports charts, KPI widgets, or arbitrary multi-collection joins.
+- Auto Patterns supports charts, KPI widgets, arbitrary multi-collection joins, or arbitrary component composition.
 - Creating a reference field populates existing records.
-- A table action is automatically inline-editable.
+- A table action is automatically inline-editable or can open a SidePanel.
 - A custom fixed-position panel behaves like a documented WDS overlay.
 - A build or deployment proves runtime data correctness.

@@ -1,6 +1,6 @@
 # Runtime Validation
 
-Build and deployment validation are necessary but insufficient. Validate the actual manager workflow in a browser.
+Build and deployment validation are necessary but insufficient. For every dashboard that reads data or supports a manager action, validate the actual workflow in a browser.
 
 ## Required Smoke Test
 
@@ -8,7 +8,7 @@ Build and deployment validation are necessary but insufficient. Validate the act
 2. Confirm the primary data request succeeds.
 3. Check browser console for uncaught errors and the network panel for failed primary requests.
 4. Exercise the main workflow: list, filter, create, edit, assign, or open detail as applicable.
-5. Verify loading, empty, permission-denied, and error states.
+5. Verify the applicable loading, empty, permission-denied, and error states.
 6. Refresh the page and confirm state remains stable.
 
 ## Failure Classification
@@ -20,4 +20,4 @@ Build and deployment validation are necessary but insufficient. Validate the act
 | Overlay scrolls unexpectedly | Host/content sizing, overflow ownership, wrong overlay primitive |
 | Build succeeded but feature fails | Browser console, network request, permission and runtime data contract |
 
-Record the evidence, the capability affected, and whether the failure is routing, schema, implementation, or runtime validation coverage.
+Record the evidence, the capability affected, and whether the failure is routing, schema, implementation, or runtime validation coverage. Report runtime status as `passed`, `failed`, or `blocked`; do not report implementation complete without it.

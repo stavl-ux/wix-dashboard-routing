@@ -4,16 +4,22 @@
     {
       "id": "registration-table",
       "surface": "table",
-      "data": { "scope": "single-collection", "collection": "Event Registrations" },
-      "route": "auto-patterns",
+      "hostSurfaceId": "event-registrations-management",
+      "hostExtension": "DASHBOARD_PAGE",
+      "implementationPrimitive": "auto-patterns",
+      "dataSource": { "kind": "existing-site-collection", "collection": "Event Registrations" },
+      "composition": "standalone-auto-patterns",
       "references": ["AUTO_PATTERNS.md"],
       "acceptance": "The table renders registrations and supports the planned filters."
     },
     {
       "id": "registration-summary",
       "surface": "metric",
-      "data": { "scope": "single-collection", "collection": "Event Registrations" },
-      "route": "custom-dashboard",
+      "hostSurfaceId": "event-registrations-insights",
+      "hostExtension": "DASHBOARD_PAGE",
+      "implementationPrimitive": "custom-dashboard",
+      "dataSource": { "kind": "existing-site-collection", "collection": "Event Registrations" },
+      "composition": "custom-dashboard-page",
       "references": ["VISUALIZATIONS.md", "RUNTIME_VALIDATION.md"],
       "acceptance": "The summary count renders a value, zero state, or localized error after loading settles."
     }

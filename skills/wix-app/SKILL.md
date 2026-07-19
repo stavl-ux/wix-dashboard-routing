@@ -15,10 +15,10 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 
 - [ ] **Step 1:** Determined extension type(s) needed
   - [ ] Asked clarifying questions if requirements were unclear
-  - [ ] **🛑 Dashboard Routing Gate (MANDATORY for every dashboard request):** Read [DASHBOARD_ROUTING.md](references/DASHBOARD_ROUTING.md), decompose the request into data, surface, interaction, overlay, and validation capabilities, and route each capability independently. Do not classify the entire dashboard as either Auto Patterns or custom React.
-  - [ ] **🛑 Auto-Patterns Gate (MANDATORY):** Use [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) for every supported single-collection CRUD capability. Auto Patterns is the default for that capability, not necessarily for the whole dashboard. Read [AUTO_PATTERNS.md](references/AUTO_PATTERNS.md) for mixed-dashboard boundaries.
+  - [ ] **🛑 Dashboard Routing Gate (MANDATORY for every dashboard request):** Read [DASHBOARD_ROUTING.md](references/DASHBOARD_ROUTING.md). First choose the host extension, then choose the implementation primitive and data source for each capability. Record the page-composition decision before scaffolding.
+  - [ ] **🛑 Auto-Patterns Gate (MANDATORY):** Use [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) only when the hosted page can remain within Auto Patterns or a documented override. Do not mix custom capabilities into an Auto Patterns page without a documented composition path. Read [AUTO_PATTERNS.md](references/AUTO_PATTERNS.md) and [CHANGE_ROUTING.md](references/CHANGE_ROUTING.md).
   - [ ] **🛑 Iteration Gate (MANDATORY):** Before editing ANY file under `src/extensions/dashboard/pages/<page>/`, check for a sibling `patterns.json`. If it exists, this is an auto-patterns page — read [CHANGE_ROUTING.md](references/CHANGE_ROUTING.md) and follow [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) Part B. Use the relevant documented override; do NOT directly add UI to the page component.
-  - [ ] Checked for implicit Data Collection need — unless user provided a collection ID directly (see [Data Collection Inference](#data-collection-inference))
+  - [ ] Classified the data source as an existing site collection, new app-owned collection, Wix business data, or external API before inferring a Data Collection extension (see [Data Collection Inference](#data-collection-inference))
   - [ ] Obtained app namespace if Data Collection extension is being created
   - [ ] Determined full scoped collection IDs if Data Collection extension is being created (see [Collection ID Coordination](#collection-id-coordination))
   - [ ] Explained recommendation with reasoning
@@ -33,6 +33,7 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
   - [ ] TypeScript compiled
   - [ ] Build succeeded
   - [ ] Preview deployed
+  - [ ] For dashboards with data or interactions: primary workflow verified in browser; console and primary network request checked
 - [ ] **Step 6:** Collected and presented ALL manual action items to user
 
 **🛑 STOP:** If any box is unchecked, do NOT proceed to the next step.
@@ -48,7 +49,7 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 | Using MCP discovery without checking refs   | Check reference files first                    |
 | Reporting done without validation           | Always run validation at the end               |
 | Letting manual action items get buried      | Aggregate all manual steps at the very end     |
-| Writing custom React for a supported single-collection CRUD capability | Use [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) for that capability, even in a mixed dashboard |
+| Writing custom React for a supported single-collection CRUD page | Use [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) when the full page fits its supported configuration or a documented override |
 | Editing the page component (`<page-name>.tsx`) to add UI (banners, headers, custom actions, slots, sections) when `patterns.json` exists | Use the matching `custom-*-override.md` from [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) Part B |
 | Treating a SidePanel, Drawer, and Dashboard Modal as interchangeable | Read [OVERLAYS.md](references/OVERLAYS.md) and name the exact documented primitive |
 | Treating a created reference field as populated relationship data | Read [DATA_MODEL_AND_OPERATIONS.md](references/DATA_MODEL_AND_OPERATIONS.md) and plan schema, record values, and manager workflow separately |
@@ -71,8 +72,8 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 
 3. **Where will it appear?**
    - Dashboard sidebar/page → read [DASHBOARD_ROUTING.md](references/DASHBOARD_ROUTING.md) first.
-     - Supported single-collection CRUD capability: [Auto Patterns Dashboard](references/AUTO_PATTERNS_DASHBOARD.md).
-     - Multi-collection data, custom logic, external APIs, metrics, or charts: use the narrow custom capability route from [CAPABILITY_CATALOG.md](references/CAPABILITY_CATALOG.md).
+     - Supported single-collection CRUD page: [Auto Patterns Dashboard](references/AUTO_PATTERNS_DASHBOARD.md).
+     - Multi-collection data, custom logic, external APIs, metrics, or charts: use a custom Dashboard Page, unless a documented Auto Patterns override supports the complete requested composition.
      - Popup/form: Dashboard Modal. Desktop contextual work: SidePanel. Mobile sliding surface: Drawer. Read [OVERLAYS.md](references/OVERLAYS.md).
    - Existing Wix app dashboard (widget) → Dashboard Plugin
    - Existing Wix app dashboard (menu item) → Dashboard Menu Plugin
@@ -84,7 +85,7 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 
 ## Decision Flow (Not sure?)
 
-- **Admin:** First read [DASHBOARD_ROUTING.md](references/DASHBOARD_ROUTING.md) and route every requested capability. Supported single-collection CRUD capability? → **Auto Patterns Dashboard**. Multi-collection, custom logic, external APIs, metrics, or charts? → scoped custom Dashboard Page capability. Need popup/form? → Dashboard Modal. Need desktop contextual work? → SidePanel. Need a mobile slide-in surface? → Drawer. Extending Wix app dashboard with a visual widget? → Dashboard Plugin. Adding a menu item to a Wix app dashboard's more-actions or bulk-actions menu? → Dashboard Menu Plugin. **Modal constraint:** Dashboard Pages cannot use `<Modal />`; use a separate Dashboard Modal extension and `dashboard.openModal()`.
+- **Admin:** First read [DASHBOARD_ROUTING.md](references/DASHBOARD_ROUTING.md). Choose a host extension before choosing components. A supported single-collection CRUD page? → **Auto Patterns Dashboard**. Multi-collection, custom logic, external APIs, metrics, or charts on the same physical page? → custom Dashboard Page unless a documented Auto Patterns override supports that composition. Need popup/form? → Dashboard Modal. Need desktop contextual work inside a Dashboard Page? → SidePanel. Need a mobile slide-in surface? → Drawer. Extending Wix app dashboard with a visual widget? → Dashboard Plugin. Adding a menu item to a Wix app dashboard's more-actions or bulk-actions menu? → Dashboard Menu Plugin. **Modal constraint:** Dashboard Pages cannot use `<Modal />`; use a separate Dashboard Modal extension and `dashboard.openModal()`.
 - **Backend:** During business flow (checkout/shipping/tax)? → Service Plugin. After event (webhooks/sync)? → Backend Event Extension. Custom HTTP endpoints? → Backend API. Need CMS collections for app data? → Data Collection.
 - **Site:** User places anywhere (standalone)? → custom element widget. Editor React component with editor manifest (styling, content, elements)? → Editor React component. Fixed slot on Wix app page? → Site Plugin. Scripts/analytics only? → Embedded Script.
 
@@ -147,14 +148,21 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 
 **CRITICAL:** Data collections are often needed implicitly — don't wait for the user to explicitly say "create a CMS collection." Infer the need automatically.
 
-**Skip this section if the user provides a collection ID directly** (e.g., an existing site-level collection). In that case, use the provided ID as-is — no Data Collection extension or namespace scoping needed.
+**Classify the source before creating a collection:**
+
+| Source | Action |
+| --- | --- |
+| Existing site CMS collection, identified by ID, clear name, or verified dashboard context | Resolve and use it. Do not create an app-owned Data Collection extension. |
+| New app-owned data | Create a Data Collection extension and obtain the app namespace. |
+| Wix business data or external API | Use the relevant platform/API route. Do not create a CMS collection unless the user explicitly needs app-owned storage. |
+| Source unclear | Inspect available context or ask one targeted question before creating a collection. |
 
 **Always include a Data Collection extension when ANY of these are true:**
 
 | Indicator | Example |
 | --- | --- |
 | User mentions saving/storing/persisting app-specific data | "save the fee amount", "store product recommendations" |
-| A dashboard page will **manage** (CRUD) domain entities | "dashboard to manage fees", "admin page to edit rules" |
+| A dashboard page will manage **new app-owned** domain entities | "dashboard to manage app-owned fee rules" |
 | A service plugin reads app-configured data at runtime | "fetch fee rules at checkout", "look up shipping rates" |
 | User mentions "dedicated database/collection" | "save in a dedicated database collection" |
 | Multiple extensions reference the same custom data | Dashboard manages fees + service plugin reads fees |
@@ -288,6 +296,7 @@ After all implementation is complete, you MUST run validation. See [APP_VALIDATI
 2. TypeScript compilation check (`npx tsc --noEmit`)
 3. Build validation (`npx wix build`)
 4. Preview deployment (`npx wix preview`)
+5. For dashboards with data or interactions, run [RUNTIME_VALIDATION.md](references/RUNTIME_VALIDATION.md) against the primary manager workflow
 
 **Do NOT report completion to the user until validation passes.**
 
@@ -311,6 +320,7 @@ Only after validation passes, provide a **concise summary section** at the top o
 - ✅ TypeScript: [No compilation errors / status]
 - ✅ Build: [Completed successfully / status]
 - ✅/⚠️ Preview: [Running at URL / Failed - reason]
+- ✅/⚠️ Runtime: [Primary workflow passed / failed / blocked, with browser evidence]
 
 **⚠️ IMPORTANT: [X] manual step(s) required to complete setup** (see "Manual Steps Required" section below)
 ```
@@ -351,6 +361,7 @@ Execute these steps sequentially after all implementation is complete. See [APP_
 2. **TypeScript Compilation** — `npx tsc --noEmit`
 3. **Build** — `npx wix build`
 4. **Preview** — `npx wix preview`
+5. **Dashboard runtime, when applicable** — follow [RUNTIME_VALIDATION.md](references/RUNTIME_VALIDATION.md): primary request, primary action, console, network, and relevant visible states
 
 Stop and report errors if any step fails. Check `.wix/debug.log` on failures.
 

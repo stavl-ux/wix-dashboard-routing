@@ -5,8 +5,14 @@ Choose an overlay by user context, not by loose wording such as “drawer” or 
 | User need | Primitive | Rules |
 | --- | --- | --- |
 | Inspect or edit a selected item while retaining desktop page context | WDS SidePanel | Use the documented overlay component. It must layer above the page and not become a fixed element inside the page layout. |
-| Perform a focused, bounded popup task | Dashboard Modal | Create/use the Dashboard Modal extension and open it through the dashboard API. |
+| Perform a focused, blocking, bounded task | Dashboard Modal | Create/use the Dashboard Modal extension and open it through the dashboard API. Use for confirmations, isolated forms, and non-contextual detail tasks. |
 | Present a mobile sliding task surface | WDS Drawer | Use it for mobile drawer behavior, not as a generic desktop SidePanel substitute. |
+
+## Precedence
+
+Choose SidePanel when the manager must keep the source table or page visible while working on the selected record. Choose Dashboard Modal when the task should block page interaction and stand alone. Choose Drawer only for a mobile sliding surface.
+
+SidePanel and Drawer are primitives hosted by a Dashboard Page; neither is a CLI extension. Dashboard Modal is a separate extension. When an Auto Patterns page cannot add the primitive through a documented override, use a custom Dashboard Page or split the workflow.
 
 ## Layout Guardrails
 

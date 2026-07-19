@@ -1,37 +1,43 @@
 [
   {
-    "id": "single-collection-crud",
-    "prompt": "Build a dashboard to manage event registrations stored in the Event Registrations CMS collection. Managers need search, status filters, and create/edit flows.",
-    "expectedRoutes": ["auto-patterns"],
-    "mustNotAssume": ["custom dashboard is required"],
+    "id": "existing-collection-crud",
+    "prompt": "Build a dashboard to manage event registrations stored in the existing Event Registrations CMS collection. Managers need search, status filters, and create/edit flows.",
+    "expectedHostExtensions": ["DASHBOARD_PAGE"],
+    "expectedPrimitives": ["auto-patterns"],
+    "expectedDataSources": ["existing-site-collection"],
+    "mustNotAssume": ["a new app-owned collection is required", "custom dashboard is required"],
     "observableCriteria": ["uses a declarative CRUD path", "does not hand-build the table", "defines browser data validation"]
   },
   {
-    "id": "mixed-dashboard",
-    "prompt": "Build an Orders dashboard with a CMS orders table, total revenue KPI, revenue by month chart, and an order detail panel.",
-    "expectedRoutes": ["auto-patterns", "custom-dashboard", "side-panel"],
-    "mustNotAssume": ["Auto Patterns provides the KPI or chart"],
-    "observableCriteria": ["preserves the table's declarative route", "plans a custom data contract for metrics", "uses SidePanel terminology"]
+    "id": "composition-boundary",
+    "prompt": "Build one Orders dashboard page with a CMS orders table, total revenue KPI, revenue by month chart, and an order detail panel.",
+    "expectedHostExtensions": ["DASHBOARD_PAGE"],
+    "expectedPrimitives": ["custom-dashboard", "custom-visualization", "wds-side-panel"],
+    "mustNotAssume": ["Auto Patterns can compose arbitrary charts and panels on the same page"],
+    "observableCriteria": ["makes an explicit same-page composition decision", "uses a custom page if no documented Auto Patterns integration exists", "plans a custom data contract for metrics"]
   },
   {
     "id": "relationship-workflow",
     "prompt": "Show Students and their assigned Classes in one management view. Create the relationship if it does not exist and let managers assign a class from the dashboard.",
-    "expectedRoutes": ["data-schema", "data-operations", "custom-dashboard", "side-panel"],
+    "expectedHostExtensions": ["DASHBOARD_PAGE", "DATA_COLLECTION"],
+    "expectedPrimitives": ["data-schema", "data-operations", "custom-dashboard", "wds-side-panel"],
     "mustNotAssume": ["creating the reference field populates it"],
     "observableCriteria": ["creates or verifies schema", "handles existing unassigned records", "persists manager assignment", "refreshes displayed relationship data"]
   },
   {
-    "id": "overlay-terminology",
-    "prompt": "When a manager chooses a student, open a right-side desktop panel to assign a class without leaving the table.",
-    "expectedRoutes": ["side-panel"],
-    "mustNotAssume": ["Drawer and SidePanel are interchangeable"],
-    "observableCriteria": ["uses WDS SidePanel", "does not build a fixed in-page panel", "preserves page context"]
+    "id": "overlay-precedence",
+    "prompt": "When a manager chooses a student, open a right-side desktop panel to assign a class without leaving the table. Use a popup only for destructive confirmation.",
+    "expectedHostExtensions": ["DASHBOARD_PAGE", "DASHBOARD_MODAL"],
+    "expectedPrimitives": ["wds-side-panel", "dashboard-modal-api"],
+    "mustNotAssume": ["Drawer and SidePanel are interchangeable", "the assignment panel needs its own CLI extension"],
+    "observableCriteria": ["uses WDS SidePanel for assignment", "uses Dashboard Modal for confirmation", "does not build a fixed in-page panel"]
   },
   {
     "id": "runtime-failure",
     "prompt": "The dashboard shows chart skeletons for two seconds and then becomes blank. Find and fix the issue.",
-    "expectedRoutes": ["custom-dashboard"],
+    "expectedHostExtensions": ["DASHBOARD_PAGE"],
+    "expectedPrimitives": ["custom-dashboard", "custom-visualization"],
     "mustNotAssume": ["successful build means the feature works"],
-    "observableCriteria": ["inspects browser console and failed requests", "validates chart response shape", "keeps a localized error state instead of blanking the page"]
+    "observableCriteria": ["inspects browser console and failed requests", "validates chart response shape", "keeps a localized error state instead of blanking the page", "reports runtime status"]
   }
 ]
