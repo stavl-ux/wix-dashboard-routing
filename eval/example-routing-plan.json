@@ -1,0 +1,21 @@
+{
+  "userOutcome": "Managers can manage event registrations and review their status.",
+  "capabilities": [
+    {
+      "id": "registration-table",
+      "surface": "table",
+      "data": { "scope": "single-collection", "collection": "Event Registrations" },
+      "route": "auto-patterns",
+      "references": ["AUTO_PATTERNS.md"],
+      "acceptance": "The table renders registrations and supports the planned filters."
+    },
+    {
+      "id": "registration-summary",
+      "surface": "metric",
+      "data": { "scope": "single-collection", "collection": "Event Registrations" },
+      "route": "custom-dashboard",
+      "references": ["VISUALIZATIONS.md", "RUNTIME_VALIDATION.md"],
+      "acceptance": "The summary count renders a value, zero state, or localized error after loading settles."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "single-collection-crud",
+    "prompt": "Build a dashboard to manage event registrations stored in the Event Registrations CMS collection. Managers need search, status filters, and create/edit flows.",
+    "expectedRoutes": ["auto-patterns"],
+    "mustNotAssume": ["custom dashboard is required"],
+    "observableCriteria": ["uses a declarative CRUD path", "does not hand-build the table", "defines browser data validation"]
+  },
+  {
+    "id": "mixed-dashboard",
+    "prompt": "Build an Orders dashboard with a CMS orders table, total revenue KPI, revenue by month chart, and an order detail panel.",
+    "expectedRoutes": ["auto-patterns", "custom-dashboard", "side-panel"],
+    "mustNotAssume": ["Auto Patterns provides the KPI or chart"],
+    "observableCriteria": ["preserves the table's declarative route", "plans a custom data contract for metrics", "uses SidePanel terminology"]
+  },
+  {
+    "id": "relationship-workflow",
+    "prompt": "Show Students and their assigned Classes in one management view. Create the relationship if it does not exist and let managers assign a class from the dashboard.",
+    "expectedRoutes": ["data-schema", "data-operations", "custom-dashboard", "side-panel"],
+    "mustNotAssume": ["creating the reference field populates it"],
+    "observableCriteria": ["creates or verifies schema", "handles existing unassigned records", "persists manager assignment", "refreshes displayed relationship data"]
+  },
+  {
+    "id": "overlay-terminology",
+    "prompt": "When a manager chooses a student, open a right-side desktop panel to assign a class without leaving the table.",
+    "expectedRoutes": ["side-panel"],
+    "mustNotAssume": ["Drawer and SidePanel are interchangeable"],
+    "observableCriteria": ["uses WDS SidePanel", "does not build a fixed in-page panel", "preserves page context"]
+  },
+  {
+    "id": "runtime-failure",
+    "prompt": "The dashboard shows chart skeletons for two seconds and then becomes blank. Find and fix the issue.",
+    "expectedRoutes": ["custom-dashboard"],
+    "mustNotAssume": ["successful build means the feature works"],
+    "observableCriteria": ["inspects browser console and failed requests", "validates chart response shape", "keeps a localized error state instead of blanking the page"]
+  }
+]
