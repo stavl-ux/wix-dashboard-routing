@@ -15,6 +15,17 @@ The dashboard agent should own the complete path from an unprepared site to a ve
 
 The agent must not invent production business records merely to make a dashboard appear populated. On a new site with no data, it should prepare the schema and show an intentional empty state. In an evaluation environment, seeded sample records are allowed only when the test explicitly requests them.
 
+## Data Presentation Rules
+
+Choose the representation that supports the operator's next decision:
+
+- **Table:** compare many records, scan multiple fields, filter, sort, or perform bulk actions.
+- **Gallery / cards:** recognize visual inventory, services, or content at a glance; use only when the data model has a meaningful image field.
+- **Both:** expose a view switcher only when the same operator needs visual recognition in one moment and dense comparison in another. In Auto Patterns, configure both `Table` and `Grid`; the documented view switcher is then enabled automatically.
+- **Metrics and charts:** summarize trends and thresholds; keep the detailed table below for inspection and follow-up.
+
+Do not add a card view merely because it exists. For bookings, exception queues, and subscription records, a dense table is normally the primary operational surface.
+
 ## Test Protocol
 
 1. Start both variants from the same fresh site state. CMS and the described collections should be absent unless a case says otherwise.
@@ -26,23 +37,25 @@ The agent must not invent production business records merely to make a dashboard
 
 Record for each run: selected route, references read, infrastructure actions, build time, cost, browser outcome, and the first broken or incomplete manager workflow.
 
-## 1. Workshop Check-in
+## 1. Inventory Reorder Board
 
-**Owner:** Solo workshop creator running paid weekend classes.
+**Owner:** Self-creator running a small visual retail catalog.
 
-**Why this is realistic:** Wix Events supports guest lists, filters, guest updates, tickets, waitlists, and check-in workflows. This is the deliberately simple control case: the main experience is one manageable data collection. 
+**Why this is realistic:** Wix Stores supports product and inventory management. This is the deliberately simple Auto Patterns control case, while also testing the documented table and gallery view switcher.
 
-**Starting site state:** New site. CMS is not enabled. No `Workshop Registrations` collection exists.
+**Starting site state:** New site. CMS is not enabled. No `Products` collection exists.
 
 **Prompt to send:**
 
-> Build a dashboard page called “Workshop Check-in” for my weekend classes. Set up the CMS data I need for workshop registrations if it does not already exist, with attendee name, email, session date, ticket type, payment status, check-in status, and notes. I need one place to find registrations quickly, see the session date, ticket type, payment status, and whether someone arrived. Add search by attendee name or email and filters for session date, ticket type, payment status, and check-in status. I should be able to mark an attendee as arrived from the list and see a clear empty state when no registrations match.
+> Build an “Inventory Reorder” dashboard for my small store. Set up the CMS data I need for products if it does not already exist, with product name, product image, SKU, category, stock on hand, reorder point, supplier, and product status. I want to start in a visual gallery so I can quickly recognize items that are low in stock, but I also need to switch to a table when I want to compare stock numbers and suppliers across many products. Add search by name or SKU, filters for category and stock status, and a way to mark an item as restocked. Show a clear empty state when no products match.
 
-**What it tests:** Whether the agent recognizes a supported single-collection management surface before reaching for a custom page.
+**Presentation requirement:** Gallery is the default for visual recognition; table is the comparison and restock-work view. The gallery must use the product image, title, and stock status rather than a generic card.
 
-**Expected candidate route:** Auto Patterns Dashboard, plus only documented table/action configuration or override support. No custom table rebuild.
+**What it tests:** Whether the agent recognizes a supported single-collection management surface, configures both documented layouts, and avoids rebuilding a custom grid or table.
 
-**Pass evidence:** CMS is enabled or reused, the collection schema is ready, and the registration list has functioning search, filters, check-in update, and intentional loading, empty, and error states.
+**Expected candidate route:** Auto Patterns Dashboard with both documented `Table` and `Grid` layouts, plus only documented table/action configuration or override support. No custom table or gallery rebuild.
+
+**Pass evidence:** CMS is enabled or reused, the product schema includes a meaningful image field, the view switcher works, the table and gallery represent the same records, restock updates persist, and loading, empty, and error states are intentional.
 
 ## 2. Booking Follow-up Desk
 
@@ -59,6 +72,8 @@ Record for each run: selected route, references read, infrastructure actions, bu
 **What it tests:** A multi-collection workflow plus the desktop contextual-edit pattern.
 
 **Expected candidate route:** Custom Dashboard Page; WDS `SidePanel` for the selected booking; WDS documentation gate for the panel, form controls, buttons, table, and filters.
+
+**Presentation requirement:** Use a table only. The manager needs to compare appointment time, staff, payment, and follow-up state across many records; cards would make this queue slower to scan.
 
 **Pass evidence:** CMS is enabled or reused, both schemas and the appointment-to-client relationship exist, and the list remains visible while a real overlay panel edits the selected appointment, persists the update, and refreshes the row without creating a mobile Drawer or a custom fixed-position panel.
 
@@ -78,6 +93,8 @@ Record for each run: selected route, references read, infrastructure actions, bu
 
 **Expected candidate route:** Custom Dashboard Page. A custom query/derived state is required; do not misroute it as a plain one-collection Auto Patterns CRUD page. Use documented WDS table, filter, bulk-action, and contextual-detail components.
 
+**Presentation requirement:** Use a dense table only, with bulk selection. This is an exception queue, not a visual catalog.
+
 **Pass evidence:** CMS is enabled or reused, the order schema is ready, the “needs attention” rule is actually applied, bulk review persists, filters affect the result set, and detail context explains the exception instead of exposing raw data only.
 
 ## 4. Multi-location Capacity Planner
@@ -95,6 +112,8 @@ Record for each run: selected route, references read, infrastructure actions, bu
 **What it tests:** Aggregation, three related data sets, business thresholds, summary metrics, and a read-heavy contextual inspection workflow.
 
 **Expected candidate route:** Custom Dashboard Page. The same physical page combines relationship resolution, calculations, metrics, and a table; it should not be forced into Auto Patterns.
+
+**Presentation requirement:** Put summary metrics above a table. Do not add cards for individual sessions; the manager's task is comparing capacity, demand, and timing across sessions.
 
 **Pass evidence:** CMS is enabled or reused, the three schemas and both relationships exist, correct thresholds and metric calculations are applied, relationship data resolves instead of showing blanks, filters work, and the page remains usable for an empty location or zero upcoming sessions.
 
@@ -114,6 +133,8 @@ Record for each run: selected route, references read, infrastructure actions, bu
 
 **Expected candidate route:** Custom Dashboard Page with a declared visualization approach. Do not claim Auto Patterns provides chart/KPI functionality unless the actual package documentation supports it.
 
+**Presentation requirement:** Use metrics and charts for trend recognition, then a table for subscription-level investigation. Do not substitute a gallery of subscription cards for the detailed list.
+
 **Pass evidence:** CMS is enabled or reused, the subscription schema is ready, metrics and charts are calculated from the same data contract as the list, all visible states handle missing or malformed data, and the dashboard does not become blank after loading or a failed request.
 
 ## Cross-case Scorecard
@@ -132,6 +153,7 @@ Score each variant 0, 1, or 2 for every row.
 ## Research Basis
 
 - Wix Events documents guest-list filtering, editing, waitlists, ticket management, and dashboard check-in workflows: [Managing Your Guest List](https://support.wix.com/en/article/wix-events-managing-your-guest-list).
+- Wix Stores documents product inventory and order management workflows: [About Wix Stores](https://support.wix.com/en/article/wix-stores-about-wix-stores).
 - Wix Bookings documents booking lists, filters, staff/client review, payments, schedules, and analytics: [Managing Bookings with the Booking List](https://support.wix.com/en/article/wix-bookings-managing-bookings-with-the-booking-list), [About Your Bookings Analytics](https://support.wix.com/en/article/wix-analytics-about-the-bookings-overview).
 - Wix Restaurants documents saved views, filters, bulk order actions, and customer details: [About the Orders Tab](https://support.wix.com/en/article/wix-restaurants-about-the-orders-tab-9533566).
 - Wix Analytics uses a visualization plus detailed table structure and supports date ranges, filters, and saved views: [Customizing Analytics Reports](https://support.wix.com/en/article/customizing-wix-analytics-reports).
