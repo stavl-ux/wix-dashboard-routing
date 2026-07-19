@@ -2,6 +2,10 @@
 
 Use a custom dashboard page for capabilities that cannot be represented declaratively: joins, bespoke workflows, external data, custom business logic, calculated views, KPIs, and charts.
 
+## Canonical Implementation References
+
+Before implementation, read [DASHBOARD_PAGE.md](DASHBOARD_PAGE.md) and the relevant Dashboard SDK guidance in [dashboard-page/DASHBOARD_API.md](dashboard-page/DASHBOARD_API.md). If the page uses WDS, invoke the Wix Design System skill and read the exact component guidance before editing UI.
+
 ## Responsibilities
 
 For every custom data surface, define:

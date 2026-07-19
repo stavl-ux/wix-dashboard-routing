@@ -2,6 +2,10 @@
 
 Charts and KPI cards are custom dashboard capabilities unless a documented Auto Patterns component supports the exact requirement.
 
+## Canonical Implementation References
+
+Read [DASHBOARD_PAGE.md](DASHBOARD_PAGE.md) for dashboard layout and page responsibilities. Invoke the Wix Design System skill before implementing the chosen WDS components. This file does not define a chart library or invent an Auto Patterns chart capability.
+
 ## Plan First
 
 For each metric or chart, define:

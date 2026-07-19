@@ -2,6 +2,10 @@
 
 Use Auto Patterns for the supported CRUD surface of a dashboard: a single collection, a management table or grid, supported filters/actions, and entity create/edit/view flows.
 
+## Canonical Implementation Reference
+
+Before scaffolding or editing configuration, read [AUTO_PATTERNS_DASHBOARD.md](AUTO_PATTERNS_DASHBOARD.md). It contains the required permissions, schema generation, `patterns.json` structure, structural limits, configuration rules, validation steps, and the detailed override index. This file only decides whether Auto Patterns is the correct route.
+
 ## Required Checks
 
 - Confirm the source is one collection, not a join or aggregate across several collections.
@@ -21,8 +25,8 @@ Use another route for:
 
 ## Mixed Dashboard Rule
 
-If a dashboard needs a collection table plus unsupported custom capabilities, keep the table on Auto Patterns. Build only the unsupported capability using the appropriate custom route.
+Use an Auto Patterns page only when the whole physical page fits its documented configuration or a documented override. If an unsupported capability must share that page and no documented integration exists, use a custom Dashboard Page or split the workflow into separate pages.
 
 ## Implementation Source
 
-Consult the current Wix Auto Patterns reference and the installed package’s documented configuration. Do not guess configuration keys or modes.
+Do not guess configuration keys or modes. Follow the canonical reference above and the installed package’s documented configuration.

@@ -18,7 +18,7 @@ For every requested capability, identify data, surface, interaction, placement, 
 
 | Capability | Host extension | Primitive | Read |
 | --- | --- | --- | --- |
-| Supported single-collection CRUD page | Dashboard Page | Auto Patterns | [AUTO_PATTERNS.md](AUTO_PATTERNS.md) |
+| Supported single-collection CRUD page | Dashboard Page | Auto Patterns | [AUTO_PATTERNS_DASHBOARD.md](AUTO_PATTERNS_DASHBOARD.md) and [AUTO_PATTERNS.md](AUTO_PATTERNS.md) |
 | Existing Auto Patterns change | Existing Dashboard Page | Auto Patterns override | [CHANGE_ROUTING.md](CHANGE_ROUTING.md) |
 | Join, aggregation, custom workflow, external data, KPI, or chart | Dashboard Page | Custom dashboard capability | [CUSTOM_DASHBOARD.md](CUSTOM_DASHBOARD.md), [VISUALIZATIONS.md](VISUALIZATIONS.md) |
 | Desktop contextual inspector or assignment | Dashboard Page | WDS SidePanel | [OVERLAYS.md](OVERLAYS.md) |
@@ -26,6 +26,10 @@ For every requested capability, identify data, surface, interaction, placement, 
 | Focused blocking popup task | Dashboard Modal | Dashboard Modal API | [OVERLAYS.md](OVERLAYS.md) |
 | New app-owned schema | Data Collection | Schema configuration | [DATA_MODEL_AND_OPERATIONS.md](DATA_MODEL_AND_OPERATIONS.md) |
 | Reference assignment or record update | Dashboard Page | Wix Data operation | [DATA_MODEL_AND_OPERATIONS.md](DATA_MODEL_AND_OPERATIONS.md) |
+
+## Canonical Implementation Rule
+
+The routing references in this directory decide the path; they never replace the upstream implementation guides. Before code is written, read the detailed reference for every selected host extension and primitive. In particular: Auto Patterns → [AUTO_PATTERNS_DASHBOARD.md](AUTO_PATTERNS_DASHBOARD.md); custom page → [DASHBOARD_PAGE.md](DASHBOARD_PAGE.md); modal → [DASHBOARD_MODAL.md](DASHBOARD_MODAL.md); app-owned schema → [DATA_COLLECTION.md](DATA_COLLECTION.md); Wix Data operation → [data-collection/WIX_DATA.md](data-collection/WIX_DATA.md).
 
 ## 3. Decide Page Composition
 

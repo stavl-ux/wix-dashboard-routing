@@ -2,6 +2,10 @@
 
 Choose an overlay by user context, not by loose wording such as “drawer” or “panel.”
 
+## Canonical Implementation References
+
+For Dashboard Modal, read [DASHBOARD_MODAL.md](DASHBOARD_MODAL.md) before scaffolding or calling the dashboard API. For WDS SidePanel or Drawer, invoke the Wix Design System skill and read the exact component guidance before writing UI. This file chooses the overlay; it does not replace component documentation.
+
 | User need | Primitive | Rules |
 | --- | --- | --- |
 | Inspect or edit a selected item while retaining desktop page context | WDS SidePanel | Use the documented overlay component. It must layer above the page and not become a fixed element inside the page layout. |

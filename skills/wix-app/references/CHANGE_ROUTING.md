@@ -1,5 +1,9 @@
 # Change Routing for Existing Dashboards
 
+## Canonical Implementation References
+
+For existing Auto Patterns pages, read [AUTO_PATTERNS_DASHBOARD.md](AUTO_PATTERNS_DASHBOARD.md) Part B and the exact relevant file under [auto-patterns-dashboard/](auto-patterns-dashboard/). This file selects the change route; it does not define override syntax.
+
 ## Inspect Before Editing
 
 1. Locate the dashboard page directory.

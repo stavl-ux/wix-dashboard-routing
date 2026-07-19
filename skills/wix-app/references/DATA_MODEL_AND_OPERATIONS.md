@@ -2,6 +2,10 @@
 
 Treat source selection, schema, relationship values, and manager workflows as separate deliverables.
 
+## Canonical Implementation References
+
+Read [DATA_COLLECTION.md](DATA_COLLECTION.md) before creating or changing app-owned collection schema. Read [data-collection/WIX_DATA.md](data-collection/WIX_DATA.md) before implementing data reads, writes, reference assignment, or permissions-sensitive operations. This file is a routing and product-workflow checklist, not an SDK reference.
+
 ## 0. Choose the Data Source
 
 | Source | Action |

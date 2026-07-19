@@ -2,6 +2,10 @@
 
 Build and deployment validation are necessary but insufficient. For every dashboard that reads data or supports a manager action, validate the actual workflow in a browser.
 
+## Canonical Implementation Reference
+
+Read [APP_VALIDATION.md](APP_VALIDATION.md) for installation, TypeScript, build, preview, and debug-log validation. This file adds browser workflow evidence; it does not replace the application validation workflow.
+
 ## Required Smoke Test
 
 1. Open the generated dashboard and wait for loading to settle.

@@ -2,6 +2,10 @@
 
 Use this catalog to separate the extension that is scaffolded from the primitive implemented inside it.
 
+## Canonical Implementation Rule
+
+After this catalog selects a host extension and primitive, read that host extension's detailed reference before implementation. For example: Auto Patterns → [AUTO_PATTERNS_DASHBOARD.md](AUTO_PATTERNS_DASHBOARD.md); custom page → [DASHBOARD_PAGE.md](DASHBOARD_PAGE.md); modal → [DASHBOARD_MODAL.md](DASHBOARD_MODAL.md); schema → [DATA_COLLECTION.md](DATA_COLLECTION.md).
+
 | Capability | Host extension | Preferred primitive | Boundary |
 | --- | --- | --- | --- |
 | Collection table with supported CRUD | Dashboard Page | Auto Patterns | One collection; full page fits declarative configuration or documented overrides |

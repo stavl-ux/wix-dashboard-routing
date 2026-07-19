@@ -1,6 +1,7 @@
 ---
 name: wix-app
 description: "Build and review Wix CLI app extensions — dashboard pages, modals, plugins, menu plugins, custom element widgets, Editor React components, site plugins, embedded scripts, backend APIs, backend events, service plugins, data collections, and App Market readiness. Use when building ANY feature or extension for a Wix CLI app or preparing a Wix app for App Market review. Triggers on: add, build, create, implement, help me, dashboard, widget, plugin, backend, API, event, collection, embedded script, service plugin, Editor React component, checkout, shipping, tax, discount, SPI, CMS, schema, tracking, popup, admin panel, menu item, modal, validate, test, verify, register extension, App Market, app review, submission readiness."
+compatibility: requires `@wix/cli` >= 1.1.192.
 ---
 
 # Wix App Builder
@@ -22,7 +23,7 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
   - [ ] Obtained app namespace if Data Collection extension is being created
   - [ ] Determined full scoped collection IDs if Data Collection extension is being created (see [Collection ID Coordination](#collection-id-coordination))
   - [ ] Explained recommendation with reasoning
-- [ ] **Step 2:** Read extension reference file(s) for the chosen type(s) and the project-wide [CODE_QUALITY.md](references/CODE_QUALITY.md)
+- [ ] **Step 2:** Read the canonical extension reference file(s) for the chosen type(s) and the project-wide [CODE_QUALITY.md](references/CODE_QUALITY.md). Routing summaries select a path; they never replace detailed implementation references.
 - [ ] **Step 3:** Checked API references; used MCP discovery only for gaps
 - [ ] **Step 4a:** Scaffolded each CLI-supported extension via `wix generate --params`
 - [ ] **Step 4b:** Filled in business logic in the generated files
@@ -148,7 +149,7 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 
 **CRITICAL:** Data collections are often needed implicitly — don't wait for the user to explicitly say "create a CMS collection." Infer the need automatically.
 
-**Classify the source before creating a collection:**
+**Dashboard-specific source classification:**
 
 | Source | Action |
 | --- | --- |
@@ -156,6 +157,8 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 | New app-owned data | Create a Data Collection extension and obtain the app namespace. |
 | Wix business data or external API | Use the relevant platform/API route. Do not create a CMS collection unless the user explicitly needs app-owned storage. |
 | Source unclear | Inspect available context or ask one targeted question before creating a collection. |
+
+For non-dashboard extension types, preserve the upstream rule: skip Data Collection inference only when the user provides a collection ID directly or the applicable extension reference establishes an existing collection. Do not interpret a collection label alone as an existing resource outside a dashboard context.
 
 **Always include a Data Collection extension when ANY of these are true:**
 
