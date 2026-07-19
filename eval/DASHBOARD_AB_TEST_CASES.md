@@ -35,7 +35,7 @@ Do not add a card view merely because it exists. For bookings, exception queues,
 5. Save the codegen log, generated result, browser console output, and screenshots.
 6. Evaluate the run against the expected route after the run completes; do not reveal the expected route to the agent.
 
-Record for each run: selected route, references read, infrastructure actions, build time, cost, browser outcome, and the first broken or incomplete manager workflow.
+Record for each run: selected route, references read, infrastructure actions, build time, cost, browser outcome, and the first broken or incomplete manager workflow. For CMS setup, distinguish a real site collection created or verified through the site capability from an app-owned collection definition that will only exist after app installation; both may be valid, but the result must match the prompt and be proven in the target site.
 
 ## 1. Inventory Reorder Board
 
@@ -139,6 +139,7 @@ Score each variant 0, 1, or 2 for every row.
 | Dimension | 0 | 1 | 2 |
 | --- | --- | --- | --- |
 | Route selection | Wrong or unproven route | Plausible but incomplete route | Correct route, evidenced by references/log |
+| CMS provisioning | Collection/schema absent or unproven | Schema definition exists but target-site availability is unproven | CMS is enabled or reused and the correct site collection, fields, permissions, and relationships are verified |
 | Workflow fit | Visual shell only | Main path partly works | Manager can complete the intended task |
 | Data behavior | Broken, mocked, or missing | Works with notable gaps | Queries, mutations, and empty/error states behave correctly |
 | Component fidelity | Custom approximation or wrong primitive | Correct family, flawed use | Exact documented component behavior and composition |
