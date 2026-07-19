@@ -17,6 +17,7 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 - [ ] **Step 1:** Determined extension type(s) needed
   - [ ] Asked clarifying questions if requirements were unclear
   - [ ] **🛑 Dashboard Routing Gate (MANDATORY for every dashboard request):** Read [DASHBOARD_ROUTING.md](references/DASHBOARD_ROUTING.md). First choose the host extension, then choose the implementation primitive and data source for each capability. Record the page-composition decision before scaffolding.
+  - [ ] **🛑 Dashboard Component Gate (MANDATORY when dashboard UI uses WDS):** Read [DASHBOARD_COMPONENTS.md](references/DASHBOARD_COMPONENTS.md). Choose the exact WDS component and documentation target before implementation; use the Wix Design System skill to read that target.
   - [ ] **🛑 Auto-Patterns Gate (MANDATORY):** Use [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) only when the hosted page can remain within Auto Patterns or a documented override. Do not mix custom capabilities into an Auto Patterns page without a documented composition path. Read [AUTO_PATTERNS.md](references/AUTO_PATTERNS.md) and [CHANGE_ROUTING.md](references/CHANGE_ROUTING.md).
   - [ ] **🛑 Iteration Gate (MANDATORY):** Before editing ANY file under `src/extensions/dashboard/pages/<page>/`, check for a sibling `patterns.json`. If it exists, this is an auto-patterns page — read [CHANGE_ROUTING.md](references/CHANGE_ROUTING.md) and follow [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) Part B. Use the relevant documented override; do NOT directly add UI to the page component.
   - [ ] Classified the data source as an existing site collection, new app-owned collection, Wix business data, or external API before inferring a Data Collection extension (see [Data Collection Inference](#data-collection-inference))
@@ -135,6 +136,7 @@ Helps build extensions for Wix CLI applications. Covers all extension types: das
 | Official Documentation Links | [DOCUMENTATION.md](references/DOCUMENTATION.md) |
 | Auto-patterns Dashboard Pages | [AUTO_PATTERNS_DASHBOARD.md](references/AUTO_PATTERNS_DASHBOARD.md) |
 | Dashboard capability routing | [DASHBOARD_ROUTING.md](references/DASHBOARD_ROUTING.md) |
+| Common dashboard component routing | [DASHBOARD_COMPONENTS.md](references/DASHBOARD_COMPONENTS.md) |
 | Supported dashboard capability boundaries | [CAPABILITY_CATALOG.md](references/CAPABILITY_CATALOG.md) |
 | Existing dashboard changes | [CHANGE_ROUTING.md](references/CHANGE_ROUTING.md) |
 | Custom dashboard responsibilities | [CUSTOM_DASHBOARD.md](references/CUSTOM_DASHBOARD.md) |
@@ -288,6 +290,7 @@ If the command fails because of unknown or invalid params, run `npx wix schema g
 Open every path returned in `newFiles` and replace stubbed handler bodies / UI / queries with the user's actual logic, guided by the extension reference file's API and configuration sections.
 
 - ⚠️ MANDATORY when using WDS: Invoke the `wix-design-system` skill **before editing your first `.tsx`/`.jsx` file that imports `@wix/design-system`**. Do NOT invoke it preemptively for backend-only or data-only jobs — it adds large content to context that you won't use.
+- ⚠️ MANDATORY for dashboard UI using WDS: Read [DASHBOARD_COMPONENTS.md](references/DASHBOARD_COMPONENTS.md), then record the exact selected WDS component and `packages/wix-design-system` documentation target in the capability plan. For a component outside the map, use the WDS skill to find and read its exact documentation and example first.
 - ⚠️ MANDATORY when using WDS: Add `import "@wix/design-system/styles.global.css";` in the **main component** entry file (`page.tsx`, modal `.tsx`, etc.) — not in child/tab/helper files.
 - ⚠️ MANDATORY when using Data Collections: Use the EXACT collection ID from `idSuffix` (case-sensitive). If `idSuffix` is `"product-recommendations"`, use `<app-namespace>/product-recommendations` NOT `productRecommendations`.
 
@@ -380,6 +383,7 @@ Stop and report errors if any step fails. Check `.wix/debug.log` on failures.
 - **maxResults: 5** for all MCP SDK searches
 - **ReadFullDocsMethodSchema** for SDK method schemas; **ReadFullDocsArticle** for prose guides only
 - **Invoke wix-design-system** first when using WDS (prevents import errors)
+- **For dashboard UI, report the exact WDS components and documentation targets used** — never report only “used WDS”
 
 ## Documentation
 

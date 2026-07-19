@@ -86,6 +86,21 @@ for (const [index, capability] of (plan.capabilities ?? []).entries()) {
   if (['wds-side-panel', 'wds-drawer'].includes(capability.implementationPrimitive) && capability.hostExtension !== 'DASHBOARD_PAGE') {
     errors.push(`${label} uses a WDS panel primitive but is not hosted by DASHBOARD_PAGE.`);
   }
+  const hasWdsComponents = Array.isArray(capability.wdsComponents) && capability.wdsComponents.length > 0;
+  const hasDocumentationTargets = Array.isArray(capability.documentationTargets) && capability.documentationTargets.length > 0;
+  const requiresWdsDocumentation = ['wds-side-panel', 'wds-drawer'].includes(capability.implementationPrimitive);
+  if (requiresWdsDocumentation && !hasWdsComponents) {
+    errors.push(`${label} uses a WDS panel primitive but does not name its WDS components.`);
+  }
+  if (requiresWdsDocumentation && !hasDocumentationTargets) {
+    errors.push(`${label} uses a WDS panel primitive but does not name its packages/wix-design-system documentation targets.`);
+  }
+  if ((hasWdsComponents || hasDocumentationTargets) && (!hasWdsComponents || !hasDocumentationTargets)) {
+    errors.push(`${label} must provide both wdsComponents and documentationTargets when either is present.`);
+  }
+  if (hasDocumentationTargets && capability.documentationTargets.some((target) => typeof target !== 'string' || !target.startsWith('packages/wix-design-system:'))) {
+    errors.push(`${label}.documentationTargets must use packages/wix-design-system targets.`);
+  }
   if (['wds-side-panel', 'wds-drawer'].includes(capability.implementationPrimitive) && capability.composition === 'standalone-auto-patterns') {
     errors.push(`${label} cannot add a WDS panel primitive to a standalone Auto Patterns page without a documented override.`);
   }
