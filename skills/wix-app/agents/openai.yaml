@@ -1,4 +1,4 @@
 interface:
-  display_name: "Wix Dashboard Routing"
-  short_description: "Route Wix dashboards by capability."
-  default_prompt: "Use $wix-app to plan and implement a Wix dashboard safely."
+  display_name: "Wix App Builder"
+  short_description: "Build Wix extensions with safe dashboard routing."
+  default_prompt: "Use $wix-app to plan and implement a Wix app extension safely."
