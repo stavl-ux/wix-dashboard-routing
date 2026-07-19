@@ -49,13 +49,12 @@ Record for each run: selected route, references read, infrastructure actions, bu
 
 > Build an “Inventory Reorder” dashboard for my small store. Set up the CMS data I need for products if it does not already exist, with product name, product image, SKU, category, stock on hand, reorder point, supplier, and product status. I want to start in a visual gallery so I can quickly recognize items that are low in stock, but I also need to switch to a table when I want to compare stock numbers and suppliers across many products. Add search by name or SKU, filters for category and stock status, and a way to mark an item as restocked. Show a clear empty state when no products match.
 
-**Presentation requirement:** Gallery is the default for visual recognition; table is the comparison and restock-work view. The gallery must use the product image, title, and stock status rather than a generic card.
-
-**What it tests:** Whether the agent recognizes a supported single-collection management surface, configures both documented layouts, and avoids rebuilding a custom grid or table.
-
-**Expected candidate route:** Auto Patterns Dashboard with both documented `Table` and `Grid` layouts, plus only documented table/action configuration or override support. No custom table or gallery rebuild.
-
-**Pass evidence:** CMS is enabled or reused, the product schema includes a meaningful image field, the view switcher works, the table and gallery represent the same records, restock updates persist, and loading, empty, and error states are intentional.
+| Evaluation area | Requirement |
+| --- | --- |
+| Presentation | Gallery is the default for visual recognition; table is the comparison and restock-work view. The gallery must use the product image, title, and stock status rather than a generic card. |
+| What it tests | Whether the agent recognizes a supported single-collection management surface, configures both documented layouts, and avoids rebuilding a custom grid or table. |
+| Expected candidate route | Auto Patterns Dashboard with both documented `Table` and `Grid` layouts, plus only documented table/action configuration or override support. No custom table or gallery rebuild. |
+| Pass evidence | CMS is enabled or reused, the product schema includes a meaningful image field, the view switcher works, the table and gallery represent the same records, restock updates persist, and loading, empty, and error states are intentional. |
 
 ## 2. Booking Follow-up Desk
 
@@ -69,13 +68,12 @@ Record for each run: selected route, references read, infrastructure actions, bu
 
 > Build a “Booking Follow-up” dashboard for my salon manager. Set up CMS collections for clients and appointments if they do not already exist, including a relationship between an appointment and its client. Show upcoming and missed appointments in one table with client, staff member, service, start time, payment status, and follow-up status. I need filters for staff member, service, date range, payment status, and missed appointments. When I select a booking, keep the list visible and open the client and appointment details in a panel on the right. From there, the manager should be able to add a follow-up note and mark the booking as contacted.
 
-**What it tests:** A multi-collection workflow plus the desktop contextual-edit pattern.
-
-**Expected candidate route:** Custom Dashboard Page; WDS `SidePanel` for the selected booking; WDS documentation gate for the panel, form controls, buttons, table, and filters.
-
-**Presentation requirement:** Use a table only. The manager needs to compare appointment time, staff, payment, and follow-up state across many records; cards would make this queue slower to scan.
-
-**Pass evidence:** CMS is enabled or reused, both schemas and the appointment-to-client relationship exist, and the list remains visible while a real overlay panel edits the selected appointment, persists the update, and refreshes the row without creating a mobile Drawer or a custom fixed-position panel.
+| Evaluation area | Requirement |
+| --- | --- |
+| Presentation | Use a table only. The manager needs to compare appointment time, staff, payment, and follow-up state across many records; cards would make this queue slower to scan. |
+| What it tests | A multi-collection workflow plus the desktop contextual-edit pattern. |
+| Expected candidate route | Custom Dashboard Page; WDS `SidePanel` for the selected booking; WDS documentation gate for the panel, form controls, buttons, table, and filters. |
+| Pass evidence | CMS is enabled or reused, both schemas and the appointment-to-client relationship exist, and the list remains visible while a real overlay panel edits the selected appointment, persists the update, and refreshes the row without creating a mobile Drawer or a custom fixed-position panel. |
 
 ## 3. Order Exceptions Queue
 
@@ -89,13 +87,12 @@ Record for each run: selected route, references read, infrastructure actions, bu
 
 > Build an “Order Exceptions” dashboard for my store operations team. Set up the CMS data needed for orders if it does not already exist. Show only orders that need attention: unpaid orders, unfulfilled orders older than 24 hours, and orders with a customer issue. Let the team search by order number or customer, filter by channel, delivery method, issue type, and date range, and save time by selecting several rows to mark as reviewed. Opening an order should show the customer details, order notes, and the reason it needs attention.
 
-**What it tests:** A custom operational queue, derived eligibility logic, filters that change the query, bulk action behavior, and contextual detail.
-
-**Expected candidate route:** Custom Dashboard Page. A custom query/derived state is required; do not misroute it as a plain one-collection Auto Patterns CRUD page. Use documented WDS table, filter, bulk-action, and contextual-detail components.
-
-**Presentation requirement:** Use a dense table only, with bulk selection. This is an exception queue, not a visual catalog.
-
-**Pass evidence:** CMS is enabled or reused, the order schema is ready, the “needs attention” rule is actually applied, bulk review persists, filters affect the result set, and detail context explains the exception instead of exposing raw data only.
+| Evaluation area | Requirement |
+| --- | --- |
+| Presentation | Use a dense table only, with bulk selection. This is an exception queue, not a visual catalog. |
+| What it tests | A custom operational queue, derived eligibility logic, filters that change the query, bulk action behavior, and contextual detail. |
+| Expected candidate route | Custom Dashboard Page. A custom query/derived state is required; do not misroute it as a plain one-collection Auto Patterns CRUD page. Use documented WDS table, filter, bulk-action, and contextual-detail components. |
+| Pass evidence | CMS is enabled or reused, the order schema is ready, the “needs attention” rule is actually applied, bulk review persists, filters affect the result set, and detail context explains the exception instead of exposing raw data only. |
 
 ## 4. Multi-location Capacity Planner
 
@@ -109,13 +106,12 @@ Record for each run: selected route, references read, infrastructure actions, bu
 
 > Build a “Capacity Planner” dashboard for our regional fitness operations team. Set up the CMS data needed for class sessions, staff, and locations if it does not already exist, including the relationships from a session to its coach and location. I need to spot classes that are overbooked, nearly empty, or have a waitlist. Show summary metrics for today and this week, then a table of upcoming sessions with location, coach, service, start time, capacity, booked spots, waitlist, and cancellations. Let regional managers filter by location, coach, service, and date range. When they open a session, show the affected class details and the linked staff and location information.
 
-**What it tests:** Aggregation, three related data sets, business thresholds, summary metrics, and a read-heavy contextual inspection workflow.
-
-**Expected candidate route:** Custom Dashboard Page. The same physical page combines relationship resolution, calculations, metrics, and a table; it should not be forced into Auto Patterns.
-
-**Presentation requirement:** Put summary metrics above a table. Do not add cards for individual sessions; the manager's task is comparing capacity, demand, and timing across sessions.
-
-**Pass evidence:** CMS is enabled or reused, the three schemas and both relationships exist, correct thresholds and metric calculations are applied, relationship data resolves instead of showing blanks, filters work, and the page remains usable for an empty location or zero upcoming sessions.
+| Evaluation area | Requirement |
+| --- | --- |
+| Presentation | Put summary metrics above a table. Do not add cards for individual sessions; the manager's task is comparing capacity, demand, and timing across sessions. |
+| What it tests | Aggregation, three related data sets, business thresholds, summary metrics, and a read-heavy contextual inspection workflow. |
+| Expected candidate route | Custom Dashboard Page. The same physical page combines relationship resolution, calculations, metrics, and a table; it should not be forced into Auto Patterns. |
+| Pass evidence | CMS is enabled or reused, the three schemas and both relationships exist, correct thresholds and metric calculations are applied, relationship data resolves instead of showing blanks, filters work, and the page remains usable for an empty location or zero upcoming sessions. |
 
 ## 5. Subscription Health Review
 
@@ -129,13 +125,12 @@ Record for each run: selected route, references read, infrastructure actions, bu
 
 > Build a “Subscription Health” dashboard for my membership business. Set up the CMS data needed for subscriptions if it does not already exist, including member name, plan, status, monthly value, start and renewal dates, last payment date, payment failures, and cancellation reason. At the top, show active subscriptions, monthly recurring revenue, subscriptions at risk because payment failed, and cancellations this month. Add a chart that shows active subscriptions and cancellations by month for the last six months. Below it, show a searchable subscription list with plan, status, monthly value, renewal date, payment failures, and cancellation reason. Let me filter by plan, status, and renewal date range, and open a member’s subscription details when I need more context.
 
-**What it tests:** The boundary where a table is only one part of a dashboard that also needs metrics, aggregation, and charts.
-
-**Expected candidate route:** Custom Dashboard Page with a declared visualization approach. Do not claim Auto Patterns provides chart/KPI functionality unless the actual package documentation supports it.
-
-**Presentation requirement:** Use metrics and charts for trend recognition, then a table for subscription-level investigation. Do not substitute a gallery of subscription cards for the detailed list.
-
-**Pass evidence:** CMS is enabled or reused, the subscription schema is ready, metrics and charts are calculated from the same data contract as the list, all visible states handle missing or malformed data, and the dashboard does not become blank after loading or a failed request.
+| Evaluation area | Requirement |
+| --- | --- |
+| Presentation | Use metrics and charts for trend recognition, then a table for subscription-level investigation. Do not substitute a gallery of subscription cards for the detailed list. |
+| What it tests | The boundary where a table is only one part of a dashboard that also needs metrics, aggregation, and charts. |
+| Expected candidate route | Custom Dashboard Page with a declared visualization approach. Do not claim Auto Patterns provides chart/KPI functionality unless the actual package documentation supports it. |
+| Pass evidence | CMS is enabled or reused, the subscription schema is ready, metrics and charts are calculated from the same data contract as the list, all visible states handle missing or malformed data, and the dashboard does not become blank after loading or a failed request. |
 
 ## Cross-case Scorecard
 
